@@ -36,7 +36,7 @@ public class EmployeeServiceTest {
     @Test
     void should_return_all_employees_when_get_employees_given_employee_service() {
         // Given
-        Employee employee = new Employee(1L, "Lucy", 20, "Female", 3000);
+        Employee employee = new Employee(1L, "Alice", 20, "Female", 3000);
         List<Employee> employees = List.of(employee);
         when(employeeJpaRepository.findAll()).thenReturn(employees);
 
@@ -54,7 +54,7 @@ public class EmployeeServiceTest {
     @Test
     void should_return_the_employee_when_get_employee_given_employee_service_and_an_employee_id() {
         // Given
-        Employee employee = new Employee(1L, "Lucy", 20, "Female", 3000);
+        Employee employee = new Employee(1L, "Alice", 20, "Female", 3000);
         when(employeeJpaRepository.findById(employee.getId())).thenReturn(java.util.Optional.of(employee));
 
         // When
@@ -86,8 +86,8 @@ public class EmployeeServiceTest {
     @Test
     void should_return_created_active_employee_when_create_given_employee_service_and_employee_with_valid_age() {
         // Given
-        Employee employee = new Employee(null, "Lucy", 20, "Female", 3000);
-        Employee savedEmployee = new Employee(1L, "Lucy", 20, "Female", 3000);
+        Employee employee = new Employee(null, "Alice", 20, "Female", 3000);
+        Employee savedEmployee = new Employee(1L, "Alice", 20, "Female", 3000);
         when(employeeJpaRepository.save(employee)).thenReturn(savedEmployee);
 
         // When
@@ -95,7 +95,7 @@ public class EmployeeServiceTest {
 
         // Then
         assertEquals(savedEmployee.getId(), employeeResponse.getId());
-        assertEquals("Lucy", employeeResponse.getName());
+        assertEquals("Alice", employeeResponse.getName());
         assertEquals(20, employeeResponse.getAge());
         assertEquals("Female", employeeResponse.getGender());
         assertEquals(3000, employeeResponse.getSalary());
@@ -105,7 +105,7 @@ public class EmployeeServiceTest {
     @Test
     void should_throw_exception_when_create_given_employee_service_and_employee_whose_age_is_less_than_18() {
         // Given
-        Employee employee = new Employee(null, "Lucy", 16, "Female", 3000);
+        Employee employee = new Employee(null, "Alice", 16, "Female", 3000);
 
         // When, Then
         EmployeeCreateException employeeCreateException = assertThrows(EmployeeCreateException.class, () -> employeeService.create(employee));
@@ -115,7 +115,7 @@ public class EmployeeServiceTest {
     @Test
     void should_throw_exception_when_create_given_employee_service_and_employee_whose_age_is_greater_than_65() {
         // Given
-        Employee employee = new Employee(null, "Lucy", 70, "Female", 3000);
+        Employee employee = new Employee(null, "Alice", 70, "Female", 3000);
 
         // When, Then
         EmployeeCreateException employeeCreateException = assertThrows(EmployeeCreateException.class, () -> employeeService.create(employee));
@@ -125,7 +125,7 @@ public class EmployeeServiceTest {
     @Test
     void should_return_inactive_employee_when_delete_given_employee_service_and_active_employee() {
         // Given
-        Employee employee = new Employee(null, "Lucy", 20, "Female", 3000);
+        Employee employee = new Employee(null, "Alice", 20, "Female", 3000);
         employee.setActive(Boolean.TRUE);
         when(employeeJpaRepository.findById(employee.getId())).thenReturn(Optional.of(employee));
 
@@ -139,7 +139,7 @@ public class EmployeeServiceTest {
     @Test
     void should_return_updated_employee_when_update_given_employee_age_and_salary() {
         // Given
-        Employee employee = new Employee(1L, "Lucy", 20, "Female", 3000);
+        Employee employee = new Employee(1L, "Alice", 20, "Female", 3000);
         employee.setActive(Boolean.TRUE);
         Employee updatedEmployeeInfo = new Employee(null, null, 30, null, 10000);
         when(employeeJpaRepository.findById(employee.getId())).thenReturn(Optional.of(employee));
@@ -148,7 +148,7 @@ public class EmployeeServiceTest {
         Employee updatedEmployee = employeeService.update(employee.getId(), updatedEmployeeInfo);
 
         // Then
-        assertEquals("Lucy", updatedEmployee.getName());
+        assertEquals("Alice", updatedEmployee.getName());
         assertEquals("Female", updatedEmployee.getGender());
         assertEquals(30, updatedEmployee.getAge());
         assertEquals(10000, updatedEmployee.getSalary());
@@ -158,7 +158,7 @@ public class EmployeeServiceTest {
     @Test
     void should_throw_exception_when_update_given_employee_service_and_inactive_employee_and_age_and_salary() {
         // Given
-        Employee employee = new Employee(null, "Lucy", 20, "Female", 3000);
+        Employee employee = new Employee(null, "Alice", 20, "Female", 3000);
         employee.setActive(Boolean.FALSE);
         Employee updatedEmployeeInfo = new Employee(null, "Lucy", 30, "Female", 10000);
         when(employeeJpaRepository.findById(employee.getId())).thenReturn(Optional.of(employee));
