@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@SuppressWarnings("all")
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
