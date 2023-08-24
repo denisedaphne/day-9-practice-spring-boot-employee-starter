@@ -2,7 +2,6 @@ package com.afs.restapi;
 
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.EmployeeJpaRepository;
-import com.afs.restapi.repository.InMemoryEmployeeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -137,7 +136,7 @@ class EmployeeApiTest {
         Employee employeeLisi = getEmployeeLily();
         Employee employee1 = employeeJpaRepository.save(employeeZhangsan);
         Employee employee2 = employeeJpaRepository.save(employeeSusan);
-        Employee employee3 = employeeJpaRepository.save(employeeLisi);
+        employeeJpaRepository.save(employeeLisi);
 
         mockMvc.perform(get("/employees")
                         .param("pageNumber", "1")
