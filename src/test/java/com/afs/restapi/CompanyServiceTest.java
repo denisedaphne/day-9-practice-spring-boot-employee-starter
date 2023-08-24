@@ -14,9 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
@@ -30,7 +27,7 @@ public class CompanyServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         companyService = new CompanyService(companyJpaRepository, employeeJpaRepository);
     }
 
@@ -68,9 +65,7 @@ public class CompanyServiceTest {
         when(companyJpaRepository.findById(invalidCompanyId)).thenReturn(Optional.empty());
 
         // When, Then
-        assertThrows(CompanyNotFoundException.class, () -> {
-            companyService.findById(invalidCompanyId);
-        });
+        assertThrows(CompanyNotFoundException.class, () -> companyService.findById(invalidCompanyId));
     }
 
     @Test
@@ -114,9 +109,7 @@ public class CompanyServiceTest {
         when(companyJpaRepository.findById(invalidCompanyId)).thenReturn(Optional.empty());
 
         // When, Then
-        assertThrows(CompanyNotFoundException.class, () -> {
-            companyService.update(invalidCompanyId, updatedCompanyInfo);
-        });
+        assertThrows(CompanyNotFoundException.class, () -> companyService.update(invalidCompanyId, updatedCompanyInfo));
     }
 
     @Test
