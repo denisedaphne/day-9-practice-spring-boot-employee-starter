@@ -42,4 +42,17 @@ public class EmployeeServiceTest {
         assertEquals(allEmployees.get(0).getGender(), employee.getGender());
         assertEquals(allEmployees.get(0).getSalary(), employee.getSalary());
     }
+
+    @Test
+    void should_return_the_employee_when_get_employee_given_employee_service_and_an_employee_id() {
+        // Given
+        Employee employee = new Employee(1L, "Lucy", 20, "Female", 3000);
+        when(employeeJpaRepository.findById(employee.getId())).thenReturn(java.util.Optional.of(employee));
+
+        // When
+        Employee foundEmployee = employeeService.findById(employee.getId());
+
+        // Then
+        assertEquals(employee, foundEmployee);
+    }
 }
