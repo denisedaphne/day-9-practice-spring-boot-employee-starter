@@ -29,7 +29,7 @@ public class EmployeeServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         employeeService = new EmployeeService(employeeJpaRepository);
     }
 
@@ -108,9 +108,7 @@ public class EmployeeServiceTest {
         Employee employee = new Employee(null, "Lucy", 16, "Female", 3000);
 
         // When, Then
-        EmployeeCreateException employeeCreateException = assertThrows(EmployeeCreateException.class, () -> {
-            employeeService.create(employee);
-        });
+        EmployeeCreateException employeeCreateException = assertThrows(EmployeeCreateException.class, () -> employeeService.create(employee));
         assertEquals("Employee must be 18~65 years old", employeeCreateException.getMessage());
     }
 
@@ -120,9 +118,7 @@ public class EmployeeServiceTest {
         Employee employee = new Employee(null, "Lucy", 70, "Female", 3000);
 
         // When, Then
-        EmployeeCreateException employeeCreateException = assertThrows(EmployeeCreateException.class, () -> {
-            employeeService.create(employee);
-        });
+        EmployeeCreateException employeeCreateException = assertThrows(EmployeeCreateException.class, () -> employeeService.create(employee));
         assertEquals("Employee must be 18~65 years old", employeeCreateException.getMessage());
     }
 
