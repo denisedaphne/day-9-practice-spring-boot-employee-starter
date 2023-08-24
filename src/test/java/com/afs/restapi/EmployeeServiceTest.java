@@ -135,4 +135,23 @@ public class EmployeeServiceTest {
         // Then
         verify(employeeJpaRepository).deleteById(employee.getId());
     }
+
+    @Test
+    void should_return_updated_employee_when_update_given_employee_age_and_salary() {
+        // Given
+        Employee employee = new Employee(1L, "Lucy", 20, "Female", 3000);
+        employee.setActive(Boolean.TRUE);
+        Employee updatedEmployeeInfo = new Employee(null, null, 30, null, 10000);
+        when(employeeJpaRepository.findById(employee.getId())).thenReturn(Optional.of(employee));
+
+        // When
+        Employee updatedEmployee = employeeService.update(employee.getId(), updatedEmployeeInfo);
+
+        // Then
+        assertEquals("Lucy", updatedEmployee.getName());
+        assertEquals("Female", updatedEmployee.getGender());
+        assertEquals(30, updatedEmployee.getAge());
+        assertEquals(10000, updatedEmployee.getSalary());
+        verify(employeeJpaRepository).save(updatedEmployee);
+    }
 }
