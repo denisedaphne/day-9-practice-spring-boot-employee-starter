@@ -101,11 +101,12 @@ public class EmployeeServiceTest {
     @Test
     void should_throw_exception_when_create_given_employee_service_and_employee_whose_age_is_less_than_18() {
         // Given
-        Employee employee = new Employee(null, "Lucy", 17, "Female", 3000);
-        when(employeeJpaRepository.save(employee)).thenThrow(EmployeeCreateException.class);
+        Employee employee = new Employee(null, "Lucy", 16, "Female", 3000);
 
         // When, Then
-        assertThrows(EmployeeCreateException.class, () -> employeeService.create(employee));
-        verify(employeeJpaRepository).save(employee);
+        EmployeeCreateException employeeCreateException = assertThrows(EmployeeCreateException.class, () -> {
+            employeeService.create(employee);
+        });
+        assertEquals("Employee must be 18~65 years old", employeeCreateException.getMessage());
     }
 }
