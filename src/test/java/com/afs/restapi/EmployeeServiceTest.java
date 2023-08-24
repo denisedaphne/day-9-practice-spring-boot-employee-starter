@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class EmployeeServiceTest {
@@ -54,5 +55,24 @@ public class EmployeeServiceTest {
 
         // Then
         assertEquals(employee, foundEmployee);
+    }
+
+    @Test
+    void should_return_employees_by_given_gender_when_get_employees_given_employee_service() {
+        // Given
+        Employee alice = new Employee(null, "Alice", 24, "Female", 9000);
+        List<Employee> employees = List.of(alice);
+        when(employeeJpaRepository.findAllByGender(anyString())).thenReturn(employees);
+
+        // When
+        List<Employee> foundEmployees = employeeService.findAllByGender("Female");
+
+        // Then
+        assertEquals(employees.size(), foundEmployees.size());
+        assertEquals(alice.getId(), foundEmployees.get(0).getId());
+        assertEquals(alice.getName(), foundEmployees.get(0).getName());
+        assertEquals(alice.getAge(), foundEmployees.get(0).getAge());
+        assertEquals(alice.getGender(), foundEmployees.get(0).getGender());
+        assertEquals(alice.getSalary(), foundEmployees.get(0).getSalary());
     }
 }
