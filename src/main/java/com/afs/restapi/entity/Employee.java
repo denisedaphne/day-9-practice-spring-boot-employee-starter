@@ -69,10 +69,6 @@ public class Employee {
         this.active = active;
     }
 
-    public Boolean isActive() {
-        return active;
-    }
-
     public Boolean isInactive() {
         return active != null && !active;
     }
