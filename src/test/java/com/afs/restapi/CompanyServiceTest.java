@@ -34,7 +34,7 @@ public class CompanyServiceTest {
     @Test
     void should_return_all_companies_when_get_all_given_company_service() {
         // Given
-        Company company = new Company(1L, "OOCL");
+        Company company = new Company(1L, "Orient Overseas Container Line");
         List<Company> companies = List.of(company);
         when(companyJpaRepository.findAll()).thenReturn(companies);
 
@@ -48,7 +48,7 @@ public class CompanyServiceTest {
     @Test
     void should_return_company_when_get_by_id_given_company_service_and_company_id() {
         // Given
-        Company company = new Company(1L, "OOCL");
+        Company company = new Company(1L, "ThoughtWorks");
         when(companyJpaRepository.findById(company.getId())).thenReturn(Optional.of(company));
 
         // When
@@ -71,8 +71,8 @@ public class CompanyServiceTest {
     @Test
     void should_return_created_company_when_create_given_company_service_and_company() {
         // Given
-        Company company = new Company(null, "OOCL");
-        Company savedCompany = new Company(1L, "OOCL");
+        Company company = new Company(null, "Google");
+        Company savedCompany = new Company(1L, "Google");
         when(companyJpaRepository.save(company)).thenReturn(savedCompany);
 
         // When
@@ -80,15 +80,15 @@ public class CompanyServiceTest {
 
         // Then
         assertEquals(savedCompany.getId(), createdCompany.getId());
-        assertEquals("OOCL", createdCompany.getName());
+        assertEquals("Google", createdCompany.getName());
         verify(companyJpaRepository).save(company);
     }
 
     @Test
     void should_return_updated_company_when_update_given_company_service_and_company_id_and_company() {
         // Given
-        Company company = new Company(1L, "OOCL");
-        Company updatedCompanyInfo = new Company(null, "CMA CGM");
+        Company company = new Company(1L, "Wells Fargo");
+        Company updatedCompanyInfo = new Company(null, "Unilever");
         when(companyJpaRepository.findById(company.getId())).thenReturn(Optional.of(company));
         when(companyJpaRepository.save(company)).thenReturn(company);
 
@@ -97,15 +97,15 @@ public class CompanyServiceTest {
 
         // Then
         assertEquals(company.getId(), updatedCompany.getId());
-        assertEquals("CMA CGM", updatedCompany.getName());
+        assertEquals("Unilever", updatedCompany.getName());
         verify(companyJpaRepository).save(company);
     }
 
     @Test
     void should_throw_exception_when_update_given_company_service_and_invalid_company_id_and_company() {
         // Given
-        long invalidCompanyId = 999L;
-        Company updatedCompanyInfo = new Company(null, "CMA CGM");
+        Long invalidCompanyId = 999L;
+        Company updatedCompanyInfo = new Company(null, "Procter & Gamble");
         when(companyJpaRepository.findById(invalidCompanyId)).thenReturn(Optional.empty());
 
         // When, Then
@@ -115,7 +115,7 @@ public class CompanyServiceTest {
     @Test
     void should_delete_company_when_delete_given_company_service_and_company_id() {
         // Given
-        long companyId = 1L;
+        Long companyId = 1L;
 
         // When
         companyService.delete(companyId);
