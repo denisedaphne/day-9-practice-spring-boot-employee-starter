@@ -88,4 +88,21 @@ public class CompanyServiceTest {
         assertEquals("OOCL", createdCompany.getName());
         verify(companyJpaRepository).save(company);
     }
+
+    @Test
+    void should_return_updated_company_when_update_given_company_service_and_company_id_and_company() {
+        // Given
+        Company company = new Company(1L, "OOCL");
+        Company updatedCompanyInfo = new Company(null, "CMA CGM");
+        when(companyJpaRepository.findById(company.getId())).thenReturn(Optional.of(company));
+        when(companyJpaRepository.save(company)).thenReturn(company);
+
+        // When
+        Company updatedCompany = companyService.update(company.getId(), updatedCompanyInfo);
+
+        // Then
+        assertEquals(company.getId(), updatedCompany.getId());
+        assertEquals("CMA CGM", updatedCompany.getName());
+        verify(companyJpaRepository).save(company);
+    }
 }
