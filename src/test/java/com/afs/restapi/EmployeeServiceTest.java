@@ -2,6 +2,7 @@ package com.afs.restapi;
 
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.exception.EmployeeCreateException;
+import com.afs.restapi.exception.EmployeeUpdateException;
 import com.afs.restapi.repository.EmployeeJpaRepository;
 import com.afs.restapi.service.EmployeeService;
 import org.junit.jupiter.api.BeforeEach;
@@ -153,5 +154,19 @@ public class EmployeeServiceTest {
         assertEquals(30, updatedEmployee.getAge());
         assertEquals(10000, updatedEmployee.getSalary());
         verify(employeeJpaRepository).save(updatedEmployee);
+    }
+
+    @Test
+    void should_throw_exception_when_update_given_employee_service_and_inactive_employee_and_age_and_salary() {
+        // Given
+        Employee employee = new Employee(null, "Lucy", 20, "Female", 3000);
+        employee.setActive(Boolean.FALSE);
+        Employee updatedEmployeeInfo = new Employee(null, "Lucy", 30, "Female", 10000);
+        when(employeeJpaRepository.findById(employee.getId())).thenReturn(Optional.of(employee));
+
+        // When, Then
+        EmployeeUpdateException employeeUpdateException = assertThrows(EmployeeUpdateException.class, () ->
+                employeeService.update(employee.getId(), updatedEmployeeInfo));
+        assertEquals("Employee is inactive", employeeUpdateException.getMessage());
     }
 }
