@@ -118,4 +118,16 @@ public class CompanyServiceTest {
             companyService.update(invalidCompanyId, updatedCompanyInfo);
         });
     }
+
+    @Test
+    void should_delete_company_when_delete_given_company_service_and_company_id() {
+        // Given
+        long companyId = 1L;
+
+        // When
+        companyService.delete(companyId);
+
+        // Then
+        verify(companyJpaRepository).deleteById(companyId);
+    }
 }
