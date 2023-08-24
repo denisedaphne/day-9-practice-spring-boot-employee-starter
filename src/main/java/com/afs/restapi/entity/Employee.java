@@ -68,6 +68,14 @@ public class Employee {
     public void setActive(Boolean active) {
         this.active = active;
     }
+
+    public Boolean isActive() {
+        return active;
+    }
+
+    public Boolean isInactive() {
+        return active != null && !active;
+    }
     public Integer getAge() {
         return age;
     }
