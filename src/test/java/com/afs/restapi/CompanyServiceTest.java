@@ -61,5 +61,15 @@ public class CompanyServiceTest {
         assertEquals(company, foundCompany);
     }
 
+    @Test
+    void should_throw_exception_when_get_by_id_given_company_service_and_invalid_company_id() {
+        // Given
+        Long invalidCompanyId = 999L;
+        when(companyJpaRepository.findById(invalidCompanyId)).thenReturn(Optional.empty());
 
+        // When, Then
+        assertThrows(CompanyNotFoundException.class, () -> {
+            companyService.findById(invalidCompanyId);
+        });
+    }
 }
