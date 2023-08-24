@@ -4,9 +4,7 @@ import com.afs.restapi.entity.Company;
 import com.afs.restapi.exception.CompanyNotFoundException;
 import com.afs.restapi.repository.CompanyJpaRepository;
 import com.afs.restapi.repository.EmployeeJpaRepository;
-import com.afs.restapi.repository.InMemoryCompanyRepository;
 import com.afs.restapi.entity.Employee;
-import com.afs.restapi.repository.InMemoryEmployeeRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -36,10 +34,11 @@ public class CompanyService {
         return company;
     }
 
-    public void update(Long id, Company company) {
+    public Company update(Long id, Company company) {
         Company toBeUpdatedCompany = findById(id);
         toBeUpdatedCompany.setName(company.getName());
         companyJpaRepository.save(toBeUpdatedCompany);
+        return toBeUpdatedCompany;
     }
 
     public Company create(Company company) {
