@@ -105,4 +105,17 @@ public class CompanyServiceTest {
         assertEquals("CMA CGM", updatedCompany.getName());
         verify(companyJpaRepository).save(company);
     }
+
+    @Test
+    void should_throw_exception_when_update_given_company_service_and_invalid_company_id_and_company() {
+        // Given
+        long invalidCompanyId = 999L;
+        Company updatedCompanyInfo = new Company(null, "CMA CGM");
+        when(companyJpaRepository.findById(invalidCompanyId)).thenReturn(Optional.empty());
+
+        // When, Then
+        assertThrows(CompanyNotFoundException.class, () -> {
+            companyService.update(invalidCompanyId, updatedCompanyInfo);
+        });
+    }
 }
