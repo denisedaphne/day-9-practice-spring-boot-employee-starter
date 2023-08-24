@@ -10,10 +10,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -120,5 +120,19 @@ public class EmployeeServiceTest {
             employeeService.create(employee);
         });
         assertEquals("Employee must be 18~65 years old", employeeCreateException.getMessage());
+    }
+
+    @Test
+    void should_return_inactive_employee_when_delete_given_employee_service_and_active_employee() {
+        // Given
+        Employee employee = new Employee(null, "Lucy", 20, "Female", 3000);
+        employee.setActive(Boolean.TRUE);
+        when(employeeJpaRepository.findById(employee.getId())).thenReturn(Optional.of(employee));
+
+        // When
+        employeeService.delete(employee.getId());
+
+        // Then
+        verify(employeeJpaRepository).deleteById(employee.getId());
     }
 }
