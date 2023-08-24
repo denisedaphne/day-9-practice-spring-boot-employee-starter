@@ -72,4 +72,20 @@ public class CompanyServiceTest {
             companyService.findById(invalidCompanyId);
         });
     }
+
+    @Test
+    void should_return_created_company_when_create_given_company_service_and_company() {
+        // Given
+        Company company = new Company(null, "OOCL");
+        Company savedCompany = new Company(1L, "OOCL");
+        when(companyJpaRepository.save(company)).thenReturn(savedCompany);
+
+        // When
+        Company createdCompany = companyService.create(company);
+
+        // Then
+        assertEquals(savedCompany.getId(), createdCompany.getId());
+        assertEquals("OOCL", createdCompany.getName());
+        verify(companyJpaRepository).save(company);
+    }
 }
