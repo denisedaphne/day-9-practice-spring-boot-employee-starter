@@ -1,6 +1,7 @@
 package com.afs.restapi;
 
 import com.afs.restapi.entity.Employee;
+import com.afs.restapi.exception.EmployeeCreateException;
 import com.afs.restapi.repository.EmployeeJpaRepository;
 import com.afs.restapi.service.EmployeeService;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,8 +11,10 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class EmployeeServiceTest {
@@ -74,5 +77,35 @@ public class EmployeeServiceTest {
         assertEquals(alice.getAge(), foundEmployees.get(0).getAge());
         assertEquals(alice.getGender(), foundEmployees.get(0).getGender());
         assertEquals(alice.getSalary(), foundEmployees.get(0).getSalary());
+    }
+
+    @Test
+    void should_return_created_active_employee_when_create_given_employee_service_and_employee_with_valid_age() {
+        // Given
+        Employee employee = new Employee(null, "Lucy", 20, "Female", 3000);
+        Employee savedEmployee = new Employee(1L, "Lucy", 20, "Female", 3000);
+        when(employeeJpaRepository.save(employee)).thenReturn(savedEmployee);
+
+        // When
+        Employee employeeResponse = employeeService.create(employee);
+
+        // Then
+        assertEquals(savedEmployee.getId(), employeeResponse.getId());
+        assertEquals("Lucy", employeeResponse.getName());
+        assertEquals(20, employeeResponse.getAge());
+        assertEquals("Female", employeeResponse.getGender());
+        assertEquals(3000, employeeResponse.getSalary());
+        verify(employeeJpaRepository).save(employee);
+    }
+
+    @Test
+    void should_throw_exception_when_create_given_employee_service_and_employee_whose_age_is_less_than_18() {
+        // Given
+        Employee employee = new Employee(null, "Lucy", 17, "Female", 3000);
+        when(employeeJpaRepository.save(employee)).thenThrow(EmployeeCreateException.class);
+
+        // When, Then
+        assertThrows(EmployeeCreateException.class, () -> employeeService.create(employee));
+        verify(employeeJpaRepository).save(employee);
     }
 }
