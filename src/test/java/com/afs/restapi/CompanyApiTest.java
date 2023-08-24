@@ -63,12 +63,12 @@ class CompanyApiTest {
     @Test
     void should_delete_company_name() throws Exception {
         Company company = new Company(1L, "abc");
-        Company company1 = companyJpaRepository.save(company);
+        Company savedCompany = companyJpaRepository.save(company);
 
-        mockMvc.perform(delete("/companies/{id}", company1.getId()))
+        mockMvc.perform(delete("/companies/{id}", savedCompany.getId()))
                 .andExpect(MockMvcResultMatchers.status().is(204));
 
-        assertTrue(companyJpaRepository.findById(company1.getId()).isEmpty());
+        assertTrue(companyJpaRepository.findById(savedCompany.getId()).isEmpty());
     }
 
     @Test
@@ -88,13 +88,13 @@ class CompanyApiTest {
     @Test
     void should_find_companies() throws Exception {
         Company company = getCompany1();
-        Company company1 = companyJpaRepository.save(company);
+        Company savedCompany = companyJpaRepository.save(company);
 
         mockMvc.perform(get("/companies"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(company1.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(company1.getName()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(savedCompany.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(savedCompany.getName()));
     }
 
     @Test
